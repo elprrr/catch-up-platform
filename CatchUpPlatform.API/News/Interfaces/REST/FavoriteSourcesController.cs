@@ -36,12 +36,25 @@ public class FavoriteSourcesController(
         OperationId = "CreateFavoriteSource")]
     [SwaggerResponse(201, "The favorite source was created", typeof(FavoriteSourceResource))]
     [SwaggerResponse(400, "The favorite source was not created")]
+    [SwaggerResponse(409, "The favorite source already exists")]
     public async Task<ActionResult> CreateFavoriteSource([FromBody] CreateFavoriteSourceResource resource)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var createFavoriteSourceCommand = CreateFavoriteSourceCommandFromResourceAssembler.ToCommandFromResource(resource);
-        var result = await favoriteSourceCommandService.Handle(createFavoriteSourceCommand);
-        if (result is null) return BadRequest();
-        return CreatedAtAction(nameof(GetFavoriteSourceById), new { id = result.Id }, FavoriteSourceResourceFromEntityAssembler.ToResourceFromEntity(result));
+        try
+        {
+            var result = await favoriteSourceCommandService.Handle(createFavoriteSourceCommand);
+            if (result is null) return BadRequest();
+            return CreatedAtAction(nameof(GetFavoriteSourceById), new { id = result.Id }, FavoriteSourceResourceFromEntityAssembler.ToResourceFromEntity(result));
+        }
+        catch (Exception ex) when (ex.Message.Contains("already exists"))
+        {
+            return Conflict("Favorite source with this SourceId already exists for the given NewsApiKey");
+        }
+        catch
+        {
+            return BadRequest();
+        }
     }
     
     
