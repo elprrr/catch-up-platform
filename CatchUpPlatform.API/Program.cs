@@ -9,6 +9,7 @@ using CatchUpPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using CatchUpPlatform.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,8 +17,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Lower Case URLs
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
+// Localization Configuration
+builder.Services.AddLocalization();
+
 // Configure Kebab Case Route Naming Convention
-builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
+builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()))
+    .AddDataAnnotationsLocalization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -86,6 +91,16 @@ using (var scope = app.Services.CreateScope())
     app.UseSwagger();
     app.UseSwaggerUI();
 //}
+
+// Localization Configuration
+    var supportedCultures = new[] { "en", "en-US", "es", "es-PE" };
+    var localizationOptions = new RequestLocalizationOptions()
+        .SetDefaultCulture(supportedCultures[0])
+        .AddSupportedCultures(supportedCultures)
+        .AddSupportedUICultures(supportedCultures);
+localizationOptions.ApplyCurrentCultureToResponseHeaders = true;
+app.UseRequestLocalization(localizationOptions);
+
 
 app.UseHttpsRedirection();
 

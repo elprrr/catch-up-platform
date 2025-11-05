@@ -3,7 +3,9 @@ using CatchUpPlatform.API.News.Domain.Model.Queries;
 using CatchUpPlatform.API.News.Domain.Services;
 using CatchUpPlatform.API.News.Interfaces.REST.Resources;
 using CatchUpPlatform.API.News.Interfaces.REST.Transform;
+using CatchUpPlatform.API.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace CatchUpPlatform.API.News.Interfaces.REST;
@@ -19,7 +21,8 @@ namespace CatchUpPlatform.API.News.Interfaces.REST;
 [Tags("Favorite Sources")]
 public class FavoriteSourcesController(
     IFavoriteSourceCommandService favoriteSourceCommandService,
-    IFavoriteSourceQueryService favoriteSourceQueryService)
+    IFavoriteSourceQueryService favoriteSourceQueryService,
+    IStringLocalizer<SharedResource> localizer)
     : ControllerBase
 {
     /// <summary>
@@ -44,12 +47,12 @@ public class FavoriteSourcesController(
         try
         {
             var result = await favoriteSourceCommandService.Handle(createFavoriteSourceCommand);
-            if (result is null) return BadRequest();
+            if (result is null) return Conflict(localizer["NewsFavoriteSourceDuplicated"].Value);
             return CreatedAtAction(nameof(GetFavoriteSourceById), new { id = result.Id }, FavoriteSourceResourceFromEntityAssembler.ToResourceFromEntity(result));
         }
         catch (Exception ex) when (ex.Message.Contains("already exists"))
         {
-            return Conflict("Favorite source with this SourceId already exists for the given NewsApiKey");
+            return Conflict(localizer["NewsFavoriteSourceDuplicated"].Value);
         }
         catch
         {

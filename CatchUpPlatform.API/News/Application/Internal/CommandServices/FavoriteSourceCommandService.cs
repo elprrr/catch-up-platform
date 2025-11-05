@@ -36,6 +36,7 @@ public class FavoriteSourceCommandService(IFavoriteSourceRepository favoriteSour
         }
         catch (Exception e)
         {
+            Console.WriteLine(e);
             return null;
         }
 
