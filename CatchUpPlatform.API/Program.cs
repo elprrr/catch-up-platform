@@ -23,45 +23,33 @@ builder.Services.AddLocalization();
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()))
     .AddDataAnnotationsLocalization();
 
+// Register RFC 7807 ProblemDetails payloads for centralized exception handling.
+builder.Services.AddProblemDetails();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 
 // Add Database Connection
 
-// Configure Database Context and Logging Levels
-if (builder.Environment.IsDevelopment())
-    builder.Services.AddDbContext<AppDbContext>(options =>
-    {
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-        // Verify Database Connection String
-        if (connectionString is null)
-            // Stop the application if the connection string is not set.
-            throw new Exception("Database connection string is not set.");
-        options.UseMySQL(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
-    });
-else if (builder.Environment.IsProduction())
-    builder.Services.AddDbContext<AppDbContext>(options =>
-    {
-        var configuration = new ConfigurationBuilder()
-            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
-            .AddEnvironmentVariables()
-            .Build();
-        var connectionStringTemplate = configuration.GetConnectionString("DefaultConnection");
-        if (string.IsNullOrEmpty(connectionStringTemplate))
-            // Stop the application if the connection string template is not set.
-            throw new Exception("Database connection string template is not set in the configuration.");
-        var connectionString = Environment.ExpandEnvironmentVariables(connectionStringTemplate);
-        if (string.IsNullOrEmpty(connectionString))
-            // Stop the application if the connection string is not set.
-            throw new Exception("Database connection string is not set in the configuration.");
-        options.UseMySQL(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Error)
-            .EnableDetailedErrors();
-    });
+// Configure Database Context and route EF logs through the app logger pipeline.
+builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
+{
+    var connectionStringTemplate = builder.Configuration.GetConnectionString("DefaultConnection");
+    if (string.IsNullOrWhiteSpace(connectionStringTemplate))
+        throw new InvalidOperationException("Database connection string is not set in the configuration.");
+
+    var connectionString = Environment.ExpandEnvironmentVariables(connectionStringTemplate);
+    if (string.IsNullOrWhiteSpace(connectionString))
+        throw new InvalidOperationException("Database connection string is not set in the configuration.");
+
+    options.UseMySQL(connectionString)
+        .UseLoggerFactory(serviceProvider.GetRequiredService<ILoggerFactory>())
+        .EnableDetailedErrors();
+
+    if (builder.Environment.IsDevelopment())
+        options.EnableSensitiveDataLogging();
+});
 
 // Configure Dependency Injection
 
@@ -75,15 +63,17 @@ builder.Services.AddScoped<IFavoriteSourceQueryService, FavoriteSourceQueryServi
 
 var app = builder.Build();
 
-// Verify Database Objects are created
+// Apply pending migrations on startup (safe to call even when schema is up to date)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
-    context.Database.EnsureCreated();
+    context.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.
+app.UseExceptionHandler();
+
 // Swagger UI is enabled in all environments for API documentation.
 // For production, consider restricting this to development-only or authenticated endpoints.
 app.UseSwagger();
