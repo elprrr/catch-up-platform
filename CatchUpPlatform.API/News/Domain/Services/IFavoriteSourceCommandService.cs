@@ -1,8 +1,16 @@
 using CatchUpPlatform.API.News.Domain.Model.Aggregates;
 using CatchUpPlatform.API.News.Domain.Model.Commands;
+using Microsoft.EntityFrameworkCore;
 
 namespace CatchUpPlatform.API.News.Domain.Services;
 
+/// <summary>
+///     Command service interface for favorite source operations.
+/// </summary>
+/// <remarks>
+///     This interface defines the contract for handling favorite source creation commands.
+///     It ensures duplicate detection and persistence of new favorite sources.
+/// </remarks>
 public interface IFavoriteSourceCommandService
 {
     /// <summary>
@@ -14,7 +22,9 @@ public interface IFavoriteSourceCommandService
     ///     If it does not exist, it creates a new favorite source and adds it to the database.
     /// </remarks>
     /// <param name="command">CreateFavoriteSourceCommand command</param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
+    /// <returns>
+    ///     The created FavoriteSource object, or null if a duplicate pair (NewsApiKey, SourceId) is detected.
+    /// </returns>
+    /// <exception cref="DbUpdateException">Thrown if the database operation fails during persistence.</exception>
     Task<FavoriteSource?> Handle(CreateFavoriteSourceCommand command);
 }
