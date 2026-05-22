@@ -13,14 +13,14 @@ public interface IBaseRepository<TEntity>
     ///     Add entity to the repository
     /// </summary>
     /// <param name="entity">Entity object to add</param>
-    /// <returns></returns>
+    /// <returns>A task representing the asynchronous add operation.</returns>
     Task AddAsync(TEntity entity);
 
     /// <summary>
     ///     Find entity by id
     /// </summary>
     /// <param name="id">The Entity ID to Find</param>
-    /// <returns>Entity object if found</returns>
+    /// <returns>A task representing the asynchronous read operation, containing the entity if found, or null otherwise.</returns>
     Task<TEntity?> FindByIdAsync(int id);
 
     /// <summary>
