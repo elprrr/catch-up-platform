@@ -16,8 +16,6 @@ public static class CreateFavoriteSourceCommandFromResourceAssembler
     /// <returns>
     ///     A CreateFavoriteSourceCommand assembled from the CreateFavoriteSourceResource
     /// </returns>
-    public static CreateFavoriteSourceCommand ToCommandFromResource(CreateFavoriteSourceResource resource)
-    {
-        return new CreateFavoriteSourceCommand(new NewsApiKey(resource.NewsApiKey), new SourceId(resource.SourceId));
-    }
+    public static CreateFavoriteSourceCommand ToCommandFromResource(CreateFavoriteSourceResource resource) =>
+        new(new NewsApiKey(resource.NewsApiKey), new SourceId(resource.SourceId));
 }

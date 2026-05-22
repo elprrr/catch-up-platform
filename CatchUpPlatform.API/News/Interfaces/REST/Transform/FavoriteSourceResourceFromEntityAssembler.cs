@@ -15,8 +15,6 @@ public static class FavoriteSourceResourceFromEntityAssembler
     /// <returns>
     ///     A FavoriteSourceResource assembled from the FavoriteSource
     /// </returns>
-    public static FavoriteSourceResource ToResourceFromEntity(FavoriteSource entity)
-    {
-        return new FavoriteSourceResource(entity.Id, entity.NewsApiKey, entity.SourceId);
-    }
+    public static FavoriteSourceResource ToResourceFromEntity(FavoriteSource entity) =>
+        new(entity.Id, entity.NewsApiKey, entity.SourceId);
 }
