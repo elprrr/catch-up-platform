@@ -1,3 +1,6 @@
 namespace CatchUpPlatform.API.Resources;
 
-public class SharedResource { }
+// ReSharper disable once ClassNeverInstantiated.Global
+public class SharedResource
+{
+}
