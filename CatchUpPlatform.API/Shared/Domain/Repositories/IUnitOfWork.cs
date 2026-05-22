@@ -11,5 +11,5 @@ public interface IUnitOfWork
     /// <summary>
     ///     Commit changes to the database
     /// </summary>
-    Task CompleteAsync();
+    Task CompleteAsync(CancellationToken cancellationToken = default);
 }

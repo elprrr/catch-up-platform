@@ -19,8 +19,8 @@ public class UnitOfWork(AppDbContext context) : IUnitOfWork
     ///     Persists all pending entity changes (Add, Modify, Remove) to the database
     ///     in a single atomic transaction.
     /// </remarks>
-    public async Task CompleteAsync()
+    public async Task CompleteAsync(CancellationToken cancellationToken = default)
     {
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
     }
 }
