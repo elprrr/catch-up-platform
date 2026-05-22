@@ -9,7 +9,6 @@ using CatchUpPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using CatchUpPlatform.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -32,28 +31,27 @@ builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 
 // Configure Database Context and Logging Levels
 if (builder.Environment.IsDevelopment())
-    builder.Services.AddDbContext<AppDbContext>(
-        options =>
-        {
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            // Verify Database Connection String
-            if (connectionString is null)
-                // Stop the application if the connection string is not set.
-                throw new Exception("Database connection string is not set.");
-            options.UseMySQL(connectionString)
-                .LogTo(Console.WriteLine, LogLevel.Information)
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors();
-        });
+    builder.Services.AddDbContext<AppDbContext>(options =>
+    {
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        // Verify Database Connection String
+        if (connectionString is null)
+            // Stop the application if the connection string is not set.
+            throw new Exception("Database connection string is not set.");
+        options.UseMySQL(connectionString)
+            .LogTo(Console.WriteLine, LogLevel.Information)
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
+    });
 else if (builder.Environment.IsProduction())
     builder.Services.AddDbContext<AppDbContext>(options =>
     {
         var configuration = new ConfigurationBuilder()
-            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
             .AddEnvironmentVariables()
             .Build();
         var connectionStringTemplate = configuration.GetConnectionString("DefaultConnection");
-        if (string.IsNullOrEmpty(connectionStringTemplate)) 
+        if (string.IsNullOrEmpty(connectionStringTemplate))
             // Stop the application if the connection string template is not set.
             throw new Exception("Database connection string template is not set in the configuration.");
         var connectionString = Environment.ExpandEnvironmentVariables(connectionStringTemplate);
@@ -86,18 +84,17 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-//}
+// Swagger UI is enabled in all environments for API documentation.
+// For production, consider restricting this to development-only or authenticated endpoints.
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Localization Configuration
-    var supportedCultures = new[] { "en", "en-US", "es", "es-PE" };
-    var localizationOptions = new RequestLocalizationOptions()
-        .SetDefaultCulture(supportedCultures[0])
-        .AddSupportedCultures(supportedCultures)
-        .AddSupportedUICultures(supportedCultures);
+string[] supportedCultures = ["en", "en-US", "es", "es-PE"];
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
 localizationOptions.ApplyCurrentCultureToResponseHeaders = true;
 app.UseRequestLocalization(localizationOptions);
 
