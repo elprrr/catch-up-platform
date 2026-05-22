@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
+        <LangVersion>14.0</LangVersion>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>false</InvariantGlobalization>
@@ -11,20 +12,20 @@
         <!-- Audit Trails related related packages -->
         <PackageReference Include="EntityFrameworkCore.CreatedUpdatedDate" Version="8.0.0"/>
         <!-- Entity Framework Core related packages -->
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.8" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.8"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational.Design" Version="1.1.6"/>
         <!-- MySQL Entity Framework Core related packages -->
-        <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.7" />
+        <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.7"/>
         <!-- Naming convention conversion related packages -->
-        <PackageReference Include="Humanizer" Version="3.0.10" />
+        <PackageReference Include="Humanizer" Version="3.0.10"/>
         <!-- Swagger related packages -->
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.7" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.7"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="News\Infrastructure\Persistence\EFC\" />
+        <Folder Include="News\Infrastructure\Persistence\EFC\"/>
     </ItemGroup>
 
 </Project>
