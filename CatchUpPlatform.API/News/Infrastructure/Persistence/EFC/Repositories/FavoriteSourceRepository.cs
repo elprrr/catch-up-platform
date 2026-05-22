@@ -7,12 +7,13 @@ using Microsoft.EntityFrameworkCore;
 namespace CatchUpPlatform.API.News.Infrastructure.Persistence.EFC.Repositories;
 
 /// <summary>
-/// Favorite source repository  
+///     Entity Framework repository for favorite source persistence.
 /// </summary>
 /// <remarks>
-/// This class implements the basic operations for a favorite source repository.
+///     This repository extends the generic BaseRepository with favorite-source-specific query methods.
+///     It provides methods to find favorites by NewsApiKey and by composite key (NewsApiKey + SourceId).
 /// </remarks>
-/// <param name="context">The AppDbContext instance.</param>
+/// <param name="context">The EF Core database context.</param>
 public class FavoriteSourceRepository(AppDbContext context)
     : BaseRepository<FavoriteSource>(context), IFavoriteSourceRepository
 {
@@ -25,6 +26,7 @@ public class FavoriteSourceRepository(AppDbContext context)
     /// <inheritdoc />
     public async Task<FavoriteSource?> FindByNewsApiKeyAndSourceIdAsync(string newsApiKey, string sourceId)
     {
-        return await Context.Set<FavoriteSource>().FirstOrDefaultAsync(f => f.NewsApiKey == newsApiKey && f.SourceId == sourceId);
+        return await Context.Set<FavoriteSource>()
+            .FirstOrDefaultAsync(f => f.NewsApiKey == newsApiKey && f.SourceId == sourceId);
     }
 }
