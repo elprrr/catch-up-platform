@@ -4,10 +4,11 @@ using CatchUpPlatform.API.News.Domain.Model.Queries;
 namespace CatchUpPlatform.API.News.Domain.Services;
 
 /// <summary>
-///     Interface for the FavoriteSourceQueryService.
+///     Query service interface for favorite source operations.
 /// </summary>
 /// <remarks>
-///     This interface defines the basic operations for the FavoriteSourceQueryService.
+///     This interface defines the contract for querying favorite sources by various filters.
+///     It supports queries by NewsApiKey, ID, and composite key (NewsApiKey + SourceId).
 /// </remarks>
 public interface IFavoriteSourceQueryService
 {
@@ -39,7 +40,7 @@ public interface IFavoriteSourceQueryService
     /// <remarks>
     ///     This method handles the GetFavoriteSourceByIdQuery. It returns the favorite source for the given Id.
     /// </remarks>
-    /// <param name="query">The GetFavoriteSourceIdQuery query</param>
+    /// <param name="query">The GetFavoriteSourceByIdQuery query</param>
     /// <returns>
     ///     The FavoriteSource object if found, or null otherwise
     /// </returns>
