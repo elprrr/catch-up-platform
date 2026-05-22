@@ -20,6 +20,7 @@ public interface IFavoriteSourceQueryService
     ///     NewsApiKey.
     /// </remarks>
     /// <param name="query">The GetAllFavoriteSourcesByNewsApiKeyQuery query</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     /// <returns>An IEnumerable containing the FavoriteSource objects</returns>
     Task<IEnumerable<FavoriteSource>> Handle(GetAllFavoriteSourcesByNewsApiKeyQuery query,
         CancellationToken cancellationToken = default);
@@ -32,6 +33,7 @@ public interface IFavoriteSourceQueryService
     ///     NewsApiKey and SourceId.
     /// </remarks>
     /// <param name="query">The GetFavoriteSourceByNewsApiKeyAndSourceIdQuery query</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     /// <returns>The FavoriteSource object if found, or null otherwise</returns>
     Task<FavoriteSource?> Handle(GetFavoriteSourceByNewsApiKeyAndSourceIdQuery query,
         CancellationToken cancellationToken = default);
@@ -43,6 +45,7 @@ public interface IFavoriteSourceQueryService
     ///     This method handles the GetFavoriteSourceByIdQuery. It returns the favorite source for the given Id.
     /// </remarks>
     /// <param name="query">The GetFavoriteSourceByIdQuery query</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     /// <returns>
     ///     The FavoriteSource object if found, or null otherwise
     /// </returns>

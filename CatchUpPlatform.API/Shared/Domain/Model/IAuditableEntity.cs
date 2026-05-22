@@ -5,7 +5,7 @@ namespace CatchUpPlatform.API.Shared.Domain.Model;
 /// </summary>
 /// <remarks>
 ///     Any entity in any bounded context that implements this interface will automatically 
-///     have <see cref="CreatedDate"/> set once on first persistence and <see cref="UpdatedDate"/>
+///     have <see cref="CreatedAt"/> set once on first persistence and <see cref="UpdatedAt"/>
 ///     refreshed on every subsequent save, via <c>AuditableEntityInterceptor</c>.
 /// </remarks>
 public interface IAuditableEntity

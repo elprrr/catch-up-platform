@@ -16,6 +16,9 @@ namespace CatchUpPlatform.API.Shared.Infrastructure.Persistence.EFC.Repositories
 /// <param name="context">The EF Core database context.</param>
 public class BaseRepository<TEntity>(AppDbContext context) : IBaseRepository<TEntity> where TEntity : class
 {
+    /// <summary>
+    ///     The EF Core <see cref="AppDbContext"/> instance available to derived repositories.
+    /// </summary>
     protected readonly AppDbContext Context = context;
 
     /// <inheritdoc />

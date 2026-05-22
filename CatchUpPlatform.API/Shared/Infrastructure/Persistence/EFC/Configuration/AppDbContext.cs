@@ -10,6 +10,7 @@ namespace CatchUpPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuratio
 /// </summary>
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
+    /// <inheritdoc />
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         // Apply audit timestamp interceptor for all IAuditableEntity implementations
@@ -17,6 +18,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         base.OnConfiguring(builder);
     }
 
+    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

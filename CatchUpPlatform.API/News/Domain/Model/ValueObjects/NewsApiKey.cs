@@ -7,6 +7,11 @@ public sealed record NewsApiKey
 {
     private const int MaxLength = 255;
 
+    /// <summary>
+    ///     Initializes a new <see cref="NewsApiKey"/> with the given raw string value.
+    /// </summary>
+    /// <param name="value">The raw News API key string. Must be non-null, non-whitespace, and at most 255 characters.</param>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is null, empty, whitespace, or exceeds the maximum length.</exception>
     public NewsApiKey(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -23,6 +28,7 @@ public sealed record NewsApiKey
     /// </summary>
     public string Value { get; }
 
+    /// <inheritdoc />
     public override string ToString() => Value;
 }
 

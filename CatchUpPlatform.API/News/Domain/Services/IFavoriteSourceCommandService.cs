@@ -21,6 +21,7 @@ public interface IFavoriteSourceCommandService
     ///     If it does not exist, it creates a new favorite source and adds it to the database.
     /// </remarks>
     /// <param name="command">CreateFavoriteSourceCommand command</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     /// <returns>
     ///     The created FavoriteSource object, or null if a duplicate pair (NewsApiKey, SourceId) is detected.
     /// </returns>

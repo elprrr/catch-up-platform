@@ -13,6 +13,7 @@ public interface IFavoriteSourceRepository : IBaseRepository<FavoriteSource>
     ///     Find favorite sources by News API Key
     /// </summary>
     /// <param name="newsApiKey">The News API Key to search.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     /// <returns>
     ///     An Enumerable containing the favorite source objects if found, or empty otherwise.
     /// </returns>
@@ -24,6 +25,7 @@ public interface IFavoriteSourceRepository : IBaseRepository<FavoriteSource>
     /// </summary>
     /// <param name="newsApiKey">The News API Key</param>
     /// <param name="sourceId">The Source ID</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     /// <returns>
     ///     The favorite source object if found, or null otherwise.
     /// </returns>

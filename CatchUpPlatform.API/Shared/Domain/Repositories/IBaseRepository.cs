@@ -13,6 +13,7 @@ public interface IBaseRepository<TEntity>
     ///     Add entity to the repository
     /// </summary>
     /// <param name="entity">Entity object to add</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     /// <returns>A task representing the asynchronous add operation.</returns>
     Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
 
@@ -20,6 +21,7 @@ public interface IBaseRepository<TEntity>
     ///     Find entity by id
     /// </summary>
     /// <param name="id">The Entity ID to Find</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     /// <returns>A task representing the asynchronous read operation, containing the entity if found, or null otherwise.</returns>
     Task<TEntity?> FindByIdAsync(int id, CancellationToken cancellationToken = default);
 
@@ -38,6 +40,7 @@ public interface IBaseRepository<TEntity>
     /// <summary>
     ///     Get All entities
     /// </summary>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     /// <returns>An Enumerable containing all entity objects</returns>
     Task<IEnumerable<TEntity>> ListAsync(CancellationToken cancellationToken = default);
 }
