@@ -21,7 +21,8 @@ public interface IFavoriteSourceQueryService
     /// </remarks>
     /// <param name="query">The GetAllFavoriteSourcesByNewsApiKeyQuery query</param>
     /// <returns>An IEnumerable containing the FavoriteSource objects</returns>
-    Task<IEnumerable<FavoriteSource>> Handle(GetAllFavoriteSourcesByNewsApiKeyQuery query);
+    Task<IEnumerable<FavoriteSource>> Handle(GetAllFavoriteSourcesByNewsApiKeyQuery query,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Handle the GetFavoriteSourceByNewsApiKeyAndSourceIdQuery.
@@ -32,7 +33,8 @@ public interface IFavoriteSourceQueryService
     /// </remarks>
     /// <param name="query">The GetFavoriteSourceByNewsApiKeyAndSourceIdQuery query</param>
     /// <returns>The FavoriteSource object if found, or null otherwise</returns>
-    Task<FavoriteSource?> Handle(GetFavoriteSourceByNewsApiKeyAndSourceIdQuery query);
+    Task<FavoriteSource?> Handle(GetFavoriteSourceByNewsApiKeyAndSourceIdQuery query,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Handle the GetFavoriteSourceByIdQuery.
@@ -44,5 +46,5 @@ public interface IFavoriteSourceQueryService
     /// <returns>
     ///     The FavoriteSource object if found, or null otherwise
     /// </returns>
-    Task<FavoriteSource?> Handle(GetFavoriteSourceByIdQuery query);
+    Task<FavoriteSource?> Handle(GetFavoriteSourceByIdQuery query, CancellationToken cancellationToken = default);
 }

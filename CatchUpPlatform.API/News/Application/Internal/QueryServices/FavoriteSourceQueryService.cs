@@ -18,20 +18,24 @@ public class FavoriteSourceQueryService(IFavoriteSourceRepository favoriteSource
     : IFavoriteSourceQueryService
 {
     /// <inheritdoc />
-    public async Task<IEnumerable<FavoriteSource>> Handle(GetAllFavoriteSourcesByNewsApiKeyQuery query)
+    public async Task<IEnumerable<FavoriteSource>> Handle(GetAllFavoriteSourcesByNewsApiKeyQuery query,
+        CancellationToken cancellationToken = default)
     {
-        return await favoriteSourceRepository.FindByNewsApiKeyAsync(query.NewsApiKey);
+        return await favoriteSourceRepository.FindByNewsApiKeyAsync(query.NewsApiKey, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<FavoriteSource?> Handle(GetFavoriteSourceByNewsApiKeyAndSourceIdQuery query)
+    public async Task<FavoriteSource?> Handle(GetFavoriteSourceByNewsApiKeyAndSourceIdQuery query,
+        CancellationToken cancellationToken = default)
     {
-        return await favoriteSourceRepository.FindByNewsApiKeyAndSourceIdAsync(query.NewsApiKey, query.SourceId);
+        return await favoriteSourceRepository.FindByNewsApiKeyAndSourceIdAsync(query.NewsApiKey, query.SourceId,
+            cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<FavoriteSource?> Handle(GetFavoriteSourceByIdQuery query)
+    public async Task<FavoriteSource?> Handle(GetFavoriteSourceByIdQuery query,
+        CancellationToken cancellationToken = default)
     {
-        return await favoriteSourceRepository.FindByIdAsync(query.Id);
+        return await favoriteSourceRepository.FindByIdAsync(query.Id, cancellationToken);
     }
 }
