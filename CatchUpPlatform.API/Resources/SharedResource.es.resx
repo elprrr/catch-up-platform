@@ -24,4 +24,13 @@
     <data name="UnexpectedErrorCreatingFavoriteSource" xml:space="preserve">
         <value>Ocurrió un error inesperado al crear la fuente favorita.</value>
     </data>
+    <data name="UnexpectedErrorProcessingRequest" xml:space="preserve">
+        <value>Ocurrió un error inesperado al procesar su solicitud.</value>
+    </data>
+    <data name="InvalidFavoriteSourceRequest" xml:space="preserve">
+        <value>La solicitud de fuente favorita contiene valores no válidos.</value>
+    </data>
+    <data name="InvalidFavoriteSourceQuery" xml:space="preserve">
+        <value>Los parámetros de consulta para fuentes favoritas contienen valores no válidos.</value>
+    </data>
 </root>

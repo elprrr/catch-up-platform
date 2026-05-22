@@ -87,7 +87,7 @@ public class FavoriteSourcesController(
                 "Validation failed while creating favorite source for NewsApiKey {NewsApiKey} and SourceId {SourceId}",
                 resource.NewsApiKey,
                 resource.SourceId);
-            return BadRequest(ex.Message);
+            return BadRequest(localizer["InvalidFavoriteSourceRequest"].Value);
         }
         catch (DbUpdateException ex) when (IsDuplicateKeyViolation(ex))
         {
@@ -190,7 +190,7 @@ public class FavoriteSourcesController(
                 "Validation failed while querying favorite source for NewsApiKey {NewsApiKey} and SourceId {SourceId}",
                 newsApiKey,
                 sourceId);
-            return BadRequest(ex.Message);
+            return BadRequest(localizer["InvalidFavoriteSourceQuery"].Value);
         }
     }
 

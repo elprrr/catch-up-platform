@@ -3,11 +3,13 @@ using CatchUpPlatform.API.News.Application.Internal.QueryServices;
 using CatchUpPlatform.API.News.Domain.Repositories;
 using CatchUpPlatform.API.News.Domain.Services;
 using CatchUpPlatform.API.News.Infrastructure.Persistence.EFC.Repositories;
+using CatchUpPlatform.API.Resources;
 using CatchUpPlatform.API.Shared.Domain.Repositories;
 using CatchUpPlatform.API.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using CatchUpPlatform.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using CatchUpPlatform.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +26,18 @@ builder.Services.AddControllers(options => options.Conventions.Add(new KebabCase
     .AddDataAnnotationsLocalization();
 
 // Register RFC 7807 ProblemDetails payloads for centralized exception handling.
-builder.Services.AddProblemDetails();
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        if (context.ProblemDetails.Status is null or >= 500)
+        {
+            var localizer = context.HttpContext.RequestServices.GetRequiredService<IStringLocalizer<SharedResource>>();
+            context.ProblemDetails.Title ??= localizer["UnexpectedServerError"].Value;
+            context.ProblemDetails.Detail ??= localizer["UnexpectedErrorProcessingRequest"].Value;
+        }
+    };
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
