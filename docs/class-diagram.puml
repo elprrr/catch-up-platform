@@ -124,6 +124,8 @@ package "Shared" {
     class AppDbContext <<db-context>> {
       +OnConfiguring(DbContextOptionsBuilder) : void
       +OnModelCreating(ModelBuilder) : void
+      --
+      +UX_FavoriteSource_NewsApiKey_SourceId <<unique-index>>
     }
 
     package "Extensions" {
@@ -193,5 +195,16 @@ CreateFavoriteSourceCommand --> FavoriteSource : constructs
 AppDbContext --> FavoriteSource : maps
 AppDbContext ..> ModelBuilderExtensions : uses
 KebabCaseRouteNamingConvention ..> Shared.Infrastructure.Interfaces.ASP.Configuration.Extensions.StringExtensions : uses
+
+note right of AppDbContext
+  Enforces unique pair for FavoriteSource:
+  (NewsApiKey, SourceId)
+end note
+
+note right of FavoriteSourcesController
+  Create flow duplicate handling:
+  - Pre-check duplicate in command service -> 409
+  - DB duplicate-key violation caught in controller -> 409
+end note
 
 @enduml
